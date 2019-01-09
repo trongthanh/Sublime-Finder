@@ -29,13 +29,6 @@ class OpenFinderCommand(sublime_plugin.WindowCommand, FinderCommand):
     def run(self, path=""):
 
         path = self.get_path(path)
-
-        if os.path.isfile(path):
-            call = ['open', '-R', path]
-        else:
-            call = ['open', path]
-
-        p = subprocess.Popen(call, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
-        if stderr:
-            print(stderr)
+        
+        # Cross-platform idea from: https://github.com/kallepersson/Sublime-Finder/issues/8
+        self.window.run_command("open_dir", {"dir": os.path.dirname(path)})
